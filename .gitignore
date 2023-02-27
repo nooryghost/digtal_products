@@ -1,3 +1,7 @@
 venv/
+media/
+
+db.sqlite3
+
 **/_pycache_/
 *.pyc
