@@ -17,19 +17,25 @@ class RegisterView(APIView):
         if not email:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
-        user, created = User.objects.get_or_create(email=email)
+        try:
+            user = User.objects.get(email=email)
 
-        if not created:
             return Response({"detail":"User already created"}, 
                             status=status.HTTP_400_BAD_REQUEST)
+
+        except User.DoesNotExist:
+            user = User.objects.create_user(email=email)
+
+        #user, created = User.objects.get_or_create(email=email)
+
         
         device = Device.objects.create(user=user)
 
         code = random.randint(10000, 99999)
 
         # send message email
-        # ? should how to setup cache memory for send code learned
-        cache.set(str(email), code, 2 * 60)
+        # ? should i learn how to setup cache memory for send code 
+        cache.set(email, code, 2 * 60)
         return Response({"code":code})
     
 class GetTokenView(APIView):
