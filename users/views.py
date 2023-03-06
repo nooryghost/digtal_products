@@ -13,18 +13,19 @@ class RegisterView(APIView):
 
     def post(self, request):
         email = request.data.get("email")
+        username = request.data.get("username")
 
         if not email:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=email, username=username)
 
-            return Response({"detail":"User already created"}, 
-                            status=status.HTTP_400_BAD_REQUEST)
+            # return Response({"detail":"User already created"}, 
+            #                 status=status.HTTP_400_BAD_REQUEST)
 
         except User.DoesNotExist:
-            user = User.objects.create_user(email=email)
+            user = User.objects.create_user(email=email, username=username)
 
         #user, created = User.objects.get_or_create(email=email)
 
