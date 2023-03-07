@@ -27,7 +27,7 @@ class CategoryDetailView(APIView):
         return Response(serializer.data)
     
 class ProductListView(APIView):
-
+    
     def get(self, request):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True, context={"request": request})

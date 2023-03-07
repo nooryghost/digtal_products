@@ -21,6 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #User setting
 AUTH_USER_MODEL = "users.User"
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-o3bo1_0_-)6h6v019(3k)(21ex80x#9+_047d4ymm=*8xt3d$i'
 
