@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from .models import Category, Product, File
 from .serializers import CategorySerializer, ProductSerializer, FileSerializer
@@ -28,7 +28,7 @@ class CategoryDetailView(APIView):
         return Response(serializer.data)
     
 class ProductListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get(self, request):
         print(request.user)
@@ -40,6 +40,7 @@ class ProductListView(APIView):
 
 
 class ProductDetailView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
         try:
