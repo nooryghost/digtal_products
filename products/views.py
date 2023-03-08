@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Category, Product, File
 from .serializers import CategorySerializer, ProductSerializer, FileSerializer
@@ -27,8 +28,11 @@ class CategoryDetailView(APIView):
         return Response(serializer.data)
     
 class ProductListView(APIView):
+    permission_classes = [IsAuthenticated]
     
     def get(self, request):
+        print(request.user)
+        print(request.auth)
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True, context={"request": request})
         
