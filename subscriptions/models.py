@@ -16,3 +16,15 @@ class Package(models.Model):
 
     class Meta:
         db_table = "packages"
+
+    def __str__(self):
+        return self.title
+    
+class Subscription(models.Model):
+    user = models.ForeignKey("users.User", related_name="%(class)%", on_delete=models.CASCADE)
+    package = models.ForeignKey(Package, related_name="%(class)%", on_delete=models.CASCADE)
+    created_time = models.DateTimeField(_("created_time"), auto_now_add=True)
+    expire_time = models.DateTimeField(_("expire_time"))
+
+    class Meta:
+        db_table = "subscriptions"
