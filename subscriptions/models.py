@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .utils.validators import validate_sku
+from utils.validators import validate_sku
 
 class Package(models.Model):
     title = models.CharField(_("title"), max_length=50)
@@ -11,6 +11,7 @@ class Package(models.Model):
     is_enable = models.BooleanField(_("is_enable"), default=True)
     price = models.PositiveSmallIntegerField(_("price"))
     duration = models.DurationField(_("duration"))
+    gateways = models.ManyToManyField("payments.Gateway")
     created_time = models.DateTimeField(_("created_time"), auto_now_add=True)
     updated_time = models.DateTimeField(_("updated_time"), auto_now_add=True)
 
@@ -21,8 +22,8 @@ class Package(models.Model):
         return self.title
     
 class Subscription(models.Model):
-    user = models.ForeignKey("users.User", related_name="%(class)%", on_delete=models.CASCADE)
-    package = models.ForeignKey(Package, related_name="%(class)%", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.User", related_name="%(class)s", on_delete=models.CASCADE)
+    package = models.ForeignKey(Package, related_name="%(class)s", on_delete=models.CASCADE)
     created_time = models.DateTimeField(_("created_time"), auto_now_add=True)
     expire_time = models.DateTimeField(_("expire_time"))
 
