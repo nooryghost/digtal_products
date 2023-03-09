@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import GateWay, Payment
+
+@admin.register(GateWay)
+class GatewayAdmin(admin.ModelAdmin):
+    list_display = ["title", "is_enable"]
+
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ["user"]
