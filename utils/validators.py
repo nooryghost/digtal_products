@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import RegexValidator
 
 class SKUValidator(RegexValidator):
     regex = "^[a-zA-Z0-9\-\_]{6,25}$"
