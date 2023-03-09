@@ -5,4 +5,7 @@ class SKUValidator(RegexValidator):
     message = "SKU must be alphanumeric with 6 to 25 characters"
     code = "invalid_sku"
 
+class Phone_NumberValidator(RegexValidator):
+    regex = ""
+
 validate_sku = SKUValidator()

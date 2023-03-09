@@ -35,3 +35,17 @@ class Payment(models.Model):
         STATUS_REFUNDED: _("This payment has been refunded")
         
     }
+
+    user = models.ForeignKey("users.User", related_name="%(class)s", on_delete=models.CASCADE)
+    package = models.ForeignKey("subscriptions.package", related_name="%(class)s", on_delete=models.CASCADE)
+    gateway = models.ForeignKey(GateWay, related_name="%(class)s", on_delete=models.CASCADE)
+    price = models.PositiveIntegerField(_("price"), default=0)
+    status = models.PositiveSmallIntegerField(_("status"), choices=STATUS_CHOICES, default=STATUS_VOID)
+    device_uuid = models.CharField(_("device_uuid"), max_length=30, blank=True)
+    phone_number = models.BigIntegerField(_("phone_number"), validators=[validate_phone_number])
+    consumed_code = models.PositiveIntegerField(_("consumed code "), null=True, db_index=True)
+    created_time = models.DateTimeField(_("created_time"), auto_now_add=True, db_index=True)
+    updated_time = models.DateTimeField(_("updated_time"), auto_now_add=True)
+
+    class Meta:
+        db_table = "payments"
