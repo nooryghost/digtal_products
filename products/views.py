@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -5,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 from .models import Category, Product, File
 from .serializers import CategorySerializer, ProductSerializer, FileSerializer
+from subscriptions.models import Subscription
 
 class CategoryListView(APIView):
 
@@ -31,8 +34,6 @@ class ProductListView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get(self, request):
-        print(request.user)
-        print(request.auth)
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True, context={"request": request})
         
@@ -43,6 +44,12 @@ class ProductDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
+        if not Subscription.objects.filter(
+            user=request.user,
+            expire_time__gt=timezone.now()
+        ).exists():
+             return Response(status=status.HTTP_423_LOCKED)
+         
         try:
             product = Product.objects.get(pk=pk)
 
