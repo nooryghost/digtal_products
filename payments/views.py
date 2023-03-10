@@ -1,6 +1,6 @@
 import uuid
 import requests
-from datetime import timezone 
+from django.utils import timezone
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -78,4 +78,4 @@ class PaymentView(APIView):
             expire_time=timezone.now() + timezone.timedelta(days=payment.package.duration.days)
         )
 
-        return Response()
+        return Response({"detail": "your payment is successful"})

@@ -8,7 +8,6 @@ class User(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.BigIntegerField(validators=[validate_phone_number])
     nick_name = models.CharField(max_length=25, blank=True)
     avatar = models.ImageField(blank=True)
     sex = models.BooleanField(null=True, help_text="false is Female and True is Male")
